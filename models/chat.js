@@ -1,5 +1,5 @@
 import { ur } from "@faker-js/faker";
-import { Schema, model, models } from "mongoose";
+import { Schema, Types, model, models } from "mongoose";
 
 const chatSchema = new Schema(
   {
@@ -7,28 +7,26 @@ const chatSchema = new Schema(
       type: String,
       required: true,
     },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
+    groupChat: {
+      type: Boolean,
+      default: false,
     },
-    password: {
-      type: String,
-      required: true,
-      select: false,
+    creator: {
+      type: Types.ObjectId,
+      ref:"User",
     },
-    avatar: {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
+    members: [
+        {
+            type: Types.ObjectId,
+            ref:"User",
+        }
+    ] 
+
     },
-  },
+  
   {
     timestamps: true,
   }
 );
+
+export default models.Chat || model("Chat", chatSchema);
